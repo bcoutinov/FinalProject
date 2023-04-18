@@ -17,16 +17,33 @@
 
 <body>
 	<div id = "header">
-	<h1>Service Desk</h1>
+		<h1>Service Desk</h1>
 	</div>
 	
 	<div id = "leftBar">
-	<h2>Login</h2>
+		<h2>Login</h2>
+		<form>
+			<label for="username">Username</label>
+			<input type="text" id="username" name="username"><br><br>
+			<label for="password">Password</label>
+			<input type="password" id="password" name="password"><br><br>
+			<input type="submit" value="Submit">
+		</form>
 	</div>
 	
 	<div id = "rightBar">
-	<h2>Register</h2>
+		<h2>Register</h2>
+		<form>
+			<label for="username">Username</label><br>
+			<input type="text" id="username" name="username"><br><br>
+			<label for="password">Password</label><br>
+			<input type="password" id="password" name="password"><br><br>
+			<input type="radio" name="admin" id="admin" value="admin">Administrator<br>
+			<input type="radio" name="client" id="client" value="client">Client<br>
+			<input type="submit" value="Create Account">
+		</form>
 	</div>
+	
 	<script src = "./client.js"></script>
 </body>
 

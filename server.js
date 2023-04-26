@@ -82,7 +82,7 @@ var ChatSchema = new Schema({
   message: String
 });
 
-var ticket = mongoose.model('model', TaskSchema);
+var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
 var chat = mongoose.model('chat', ChatSchema);
 

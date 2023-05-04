@@ -7,7 +7,7 @@ This is a JS file server side functionality
 const express = require('express');
 const app = express();
 const port = 80;
-app.use(express.static('./public_html')); // Loads HTML for UI
+app.use(express.static('./index.html')); // Loads HTML for UI
 const { default: mongoose } = require('mongoose');
 const parser = require('body-parser');
 const mongoDBURL = 'INSERT - MONGODB URL';
@@ -59,9 +59,9 @@ var TicketSchema = new Schema({
   user: String,
   priority: Number,
   date: String,
-  assignedTo: [],
   type: String,
   description: String,
+  status: String,
   chats: []
 });
 
@@ -70,21 +70,11 @@ var UserSchema = new Schema({
   username: String,
   password: String,
   priv: String, // u for user, a for admin
-  tickets: [],
-  assigned: [] 
-});
-
-// Chat schema
-var ChatSchema = new Schema({
-  user: String,
-  date: String,
-  ticket: String,
-  message: String
+  tickets: []
 });
 
 var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
-var chat = mongoose.model('chat', ChatSchema);
 
 // Adds a user to the db
 app.post('/post/newUser/', (req, res) => { 
@@ -106,9 +96,9 @@ app.post('/post/newUser/', (req, res) => {
   });
 });
 
-// Returns a JSON array containing the information for every task.
+// Returns a JSON array containing the information for every ticket.
 app.get('/get/tickets/', auth, checkAdmin, (req, res) => { 
-  let p1 = task.find({}).exec();
+  let p1 = ticket.find({}).exec();
   p1.then( (results) => {
       res.end(JSON.stringify(results));
   });
@@ -136,16 +126,23 @@ app.get('/get/tickets/:username', auth, (req, res) =>{
   });
 });
 
+// Returns information for one ticket
+app.get('/get/ticekt/:id', auth, (req, res) => {
+  let id = req.params.keyword;
+  let p1 = ticket.findById(id).exec()
+  p1.then((results) => {
+    console.log(JSON.stringify(results));
+    res.end(JSON.stringify(results));
+  });
+});
 
-
-// Adds an item to the db
+// Adds a ticket to the db
 app.post('/post/tickets/', auth, (req, res) => {
 
   let t = req.body.title;
   let u = req.body.username;  
   let p = req.body.priority;
   let date = req.body.date;
-  let usersAssigned = req.body.assignedTo;
   let typ = req.body.type;
   let desc = req.body.desc;
 
@@ -154,8 +151,8 @@ app.post('/post/tickets/', auth, (req, res) => {
     user: u,
     priority: p,
     date: date,
-    assignedTo: usersAssigned,
     type: typ,
+    status: "open",
     description: desc
   });
 
@@ -165,7 +162,6 @@ app.post('/post/tickets/', auth, (req, res) => {
     console.log("New ticket: "+ t);
     let p2 = user.findOne({username: u}).exec();
     p2.then((doc =>{
-      doc.listings.push(id);
       let p3 = doc.save();
       p3.then((doc => {
         console.log("New ticket: "+ t + " added to: " + u);
@@ -188,8 +184,8 @@ app.post('/post/tickets/', auth, (req, res) => {
 });
 
 // Handles logins
-app.post('/post/login', (req, res,) => {
-  let u = req.body.password;
+app.post('/post/login', (req, res) => {
+  let u = req.body.username;
   let p = req.body.password;
 
   let p1 = user.findOne({"username": u}).exec();
@@ -218,6 +214,27 @@ app.post('/post/login', (req, res,) => {
     console.log(error);
   });
 });
+
+// Posts a chat message to a ticket
+app.post('/post/msg', auth, (req,res) => {
+  let u = req.cookies.login.username;
+  let id = req.body.id;
+  let msg = req.body.msg;
+
+  let msgItm = [u, msg];
+  let p1 = ticket.findById(id).exec()
+  p1.then((results) => {
+    results.chats.push(msgItm);
+    
+    let p2 = results.save();
+    p2.then((results) => {
+      res.end('msg saved');
+    });
+  });
+  p1.catch((err) => {
+    res.end('Ticket not found');
+  });
+})
 
 // Redirects back to the home page
 app.get('/home', auth, (req,res) =>{

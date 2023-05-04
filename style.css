@@ -1,4 +1,4 @@
-/*	Author: 	Carlton Louie, Kianny Calvo, Brenda Coutino
+/*	Author: 	Carlton Louie, Brenda Coutino
 	Class:		CSC 337
 	File:		style.css
 	Assignment:	Final Project
@@ -18,9 +18,21 @@ body{
 	left: 0;
 	right: 0;
 	height: 20%;
-	border:solid rgb(40, 62, 102);
+	border:	solid;
 	text-align: center;
 	padding: 20px;
+}
+
+#mainTable{
+	background-color: rgb(45, 114, 178);
+	color: white;
+	position: fixed;
+	top: 20%;
+	height: ;
+	left: 0;
+	right: 0%;
+	bottom: 0;
+	border: solid;
 }
 
 #leftBar{
@@ -31,7 +43,7 @@ body{
 	left: 0;
 	right: 50%;
 	bottom: 0;
-	border: solid rgb(40, 62, 102);
+	border: solid;
 	padding-left: 20px;
 }
 
@@ -43,8 +55,12 @@ body{
 	left: 50%;
 	right: 0%;
 	bottom: 0;
-	border: solid rgb(40, 62, 102);
+	border: solid;
 	padding-left: 20px;
+}
+
+table, th, td{
+  border: solid;
 }
 
 h2{

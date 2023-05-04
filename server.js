@@ -59,9 +59,9 @@ var TicketSchema = new Schema({
   user: String,
   priority: Number,
   date: String,
-  assignedTo: [],
   type: String,
   description: String,
+  status: String,
   chats: []
 });
 
@@ -70,21 +70,11 @@ var UserSchema = new Schema({
   username: String,
   password: String,
   priv: String, // u for user, a for admin
-  tickets: [],
-  assigned: [] 
-});
-
-// Chat schema
-var ChatSchema = new Schema({
-  user: String,
-  date: String,
-  ticket: String,
-  message: String
+  tickets: []
 });
 
 var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
-var chat = mongoose.model('chat', ChatSchema);
 
 // Adds a user to the db
 app.post('/post/newUser/', (req, res) => { 
@@ -146,28 +136,6 @@ app.get('/get/ticekt/:id', auth, (req, res) => {
   });
 });
 
-app.get('/get/tickets/:username', auth, (req, res) =>{ 
-  let u = req.cookies.login.username;
-  let p1 = user.findOne({username : u}).exec();
-  p1.then( (results) => {
-    let id = results.tickets
-    console.log(id);
-    let p2 = ticket.find({_id: id}).exec()
-    p2.then((results) => {
-      console.log(JSON.stringify(results));
-      res.end(JSON.stringify(results));
-    });
-    p2.catch((err) => {
-      console.log("Couldn't find tickets");
-      res.end("Couldn't find tickets")
-    });
-  });
-  p1.catch((err) => {
-    res.end(err);
-  });
-});
-
-
 // Adds a ticket to the db
 app.post('/post/tickets/', auth, (req, res) => {
 
@@ -175,7 +143,6 @@ app.post('/post/tickets/', auth, (req, res) => {
   let u = req.body.username;  
   let p = req.body.priority;
   let date = req.body.date;
-  let usersAssigned = req.body.assignedTo;
   let typ = req.body.type;
   let desc = req.body.desc;
 
@@ -184,8 +151,8 @@ app.post('/post/tickets/', auth, (req, res) => {
     user: u,
     priority: p,
     date: date,
-    assignedTo: usersAssigned,
     type: typ,
+    status: "open",
     description: desc
   });
 
@@ -195,7 +162,6 @@ app.post('/post/tickets/', auth, (req, res) => {
     console.log("New ticket: "+ t);
     let p2 = user.findOne({username: u}).exec();
     p2.then((doc =>{
-      doc.listings.push(id);
       let p3 = doc.save();
       p3.then((doc => {
         console.log("New ticket: "+ t + " added to: " + u);
@@ -218,8 +184,8 @@ app.post('/post/tickets/', auth, (req, res) => {
 });
 
 // Handles logins
-app.post('/post/login', (req, res,) => {
-  let u = req.body.password;
+app.post('/post/login', (req, res) => {
+  let u = req.body.username;
   let p = req.body.password;
 
   let p1 = user.findOne({"username": u}).exec();
@@ -248,6 +214,27 @@ app.post('/post/login', (req, res,) => {
     console.log(error);
   });
 });
+
+// Posts a chat message to a ticket
+app.post('/post/msg', auth, (req,res) => {
+  let u = req.cookies.login.username;
+  let id = req.body.id;
+  let msg = req.body.msg;
+
+  let msgItm = [u, msg];
+  let p1 = ticket.findById(id).exec()
+  p1.then((results) => {
+    results.chats.push(msgItm);
+    
+    let p2 = results.save();
+    p2.then((results) => {
+      res.end('msg saved');
+    });
+  });
+  p1.catch((err) => {
+    res.end('Ticket not found');
+  });
+})
 
 // Redirects back to the home page
 app.get('/home', auth, (req,res) =>{

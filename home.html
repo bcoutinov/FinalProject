@@ -1,8 +1,8 @@
-<!--Author: 	Carlton Louie, Kianny Calvo, Brenda Coutino
+<!--Author: 	Carlton Louie, Brenda Coutino
   Class:		CSC 337
 	File:		home_client.html
 	Assignment:	Final Project
-	This file is the HTML for the home page for a client.
+	This file will be the home page for clients.
 	-->
 
 <!DOCTYPE html>
@@ -21,10 +21,18 @@
 	</div>
 	
 	<div id = "leftBar">
-	<h2>Your Tickets</h2>
-	<h3>Ticket Num.</h3>
-	<h3>Description</h3>
-	<h3>Status</h3>
+		<table style="width:100%">
+			<tr>
+				<th>Number</th>
+				<th>Created</th>
+				<th>Priority</th>
+			</tr>
+			<tr>
+				<td>12345</td>  <!--Ticket Number-->
+				<td>2023-05-03</td>  <!--Time Created-->
+				<td>3</td>  <!--Priority-->
+			</tr>
+		</table>
 	</div>
 	
 	<div id = "rightBar">
@@ -32,8 +40,6 @@
 	<form>
       <label for="name">Name</label>
       <input type="text" id="name" name="name"><br><br>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email"><br><br>
 			<label>Ticket Type</label>
 			<input type="radio" name="help" id="help">Help Request
 			<input type="radio" name="purchase" id="purchase">Purchase Request

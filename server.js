@@ -7,7 +7,7 @@ This is a JS file server side functionality
 const express = require('express');
 const app = express();
 const port = 80;
-app.use(express.static('./public_html')); // Loads HTML for UI
+app.use(express.static('./index.html')); // Loads HTML for UI
 const { default: mongoose } = require('mongoose');
 const parser = require('body-parser');
 const mongoDBURL = 'INSERT - MONGODB URL';
@@ -106,9 +106,9 @@ app.post('/post/newUser/', (req, res) => {
   });
 });
 
-// Returns a JSON array containing the information for every task.
+// Returns a JSON array containing the information for every ticket.
 app.get('/get/tickets/', auth, checkAdmin, (req, res) => { 
-  let p1 = task.find({}).exec();
+  let p1 = ticket.find({}).exec();
   p1.then( (results) => {
       res.end(JSON.stringify(results));
   });
@@ -136,9 +136,39 @@ app.get('/get/tickets/:username', auth, (req, res) =>{
   });
 });
 
+// Returns information for one ticket
+app.get('/get/ticekt/:id', auth, (req, res) => {
+  let id = req.params.keyword;
+  let p1 = ticket.findById(id).exec()
+  p1.then((results) => {
+    console.log(JSON.stringify(results));
+    res.end(JSON.stringify(results));
+  });
+});
+
+app.get('/get/tickets/:username', auth, (req, res) =>{ 
+  let u = req.cookies.login.username;
+  let p1 = user.findOne({username : u}).exec();
+  p1.then( (results) => {
+    let id = results.tickets
+    console.log(id);
+    let p2 = ticket.find({_id: id}).exec()
+    p2.then((results) => {
+      console.log(JSON.stringify(results));
+      res.end(JSON.stringify(results));
+    });
+    p2.catch((err) => {
+      console.log("Couldn't find tickets");
+      res.end("Couldn't find tickets")
+    });
+  });
+  p1.catch((err) => {
+    res.end(err);
+  });
+});
 
 
-// Adds an item to the db
+// Adds a ticket to the db
 app.post('/post/tickets/', auth, (req, res) => {
 
   let t = req.body.title;

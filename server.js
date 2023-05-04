@@ -236,6 +236,26 @@ app.post('/post/msg', auth, (req,res) => {
   });
 })
 
+// Updates status of a ticket
+app.post('/post/updtMsg', auth, (req,res) => {
+  let id = req.body.id;
+  let stat = req.body.stat;
+
+  let msgItm = [u, msg];
+  let p1 = ticket.findById(id).exec()
+  p1.then((results) => {
+    results.status = stat;
+    
+    let p2 = results.save();
+    p2.then((results) => {
+      res.end('stat saved');
+    });
+  });
+  p1.catch((err) => {
+    res.end('Ticket not found');
+  });
+});
+
 // Redirects back to the home page
 app.get('/home', auth, (req,res) =>{
   res.redirect('/home.html');

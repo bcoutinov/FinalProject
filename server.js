@@ -261,17 +261,15 @@ app.post('/post/login', (req, res) => {
 // Posts a chat message to a ticket
 app.post('/post/msg', auth, (req,res) => {
   let u = req.cookies.login.username;
-  let id = req.body.id;
+  let id = req.cookies.ticketId.id;
   let msg = req.body.msg;
-
   let msgItm = [u, msg];
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     results.chats.push(msgItm);
-    
     let p2 = results.save();
     p2.then((results) => {
-      res.end('msg saved');
+      res.sendStatus(200);
     });
   });
   p1.catch((err) => {

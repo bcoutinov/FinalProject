@@ -152,7 +152,7 @@ h2 {
   opacity: 0.8;
 }
 
-#in-progress, #complete {
+#in-progress, #closed {
   width:200px;
   padding: 10px;
   background-color: rgb(71, 75, 68, 0.5);
@@ -163,7 +163,7 @@ h2 {
   opacity: 0.8;
 }
 
-#complete {
+#closed {
   position: fixed;
   right:20px;
   bottom: 80px;
@@ -175,7 +175,7 @@ h2 {
   bottom: 140px;
 }
 
-#complete:hover, #in-progress:hover {
+#closed:hover, #in-progress:hover {
   background-color: #555;
 }
 

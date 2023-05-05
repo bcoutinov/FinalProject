@@ -53,7 +53,8 @@ function createTicket() {
 		let html = "";
 		let table = document.getElementById("client-ticket-table");
 		for (i in objects) {
-			html = '<input type="button" value="ID?" class="view-ticket" onclick="openTicket(this)">'
+			var buttonValue = object[i]._id.slice(18,23);
+			html = '<input type="button" value=\''+ buttonValue +'\' class="view-ticket" onclick="openTicket(this)">'
 			var row = document.createElement("tr");
 			var c1 = document.createElement("td");
 			var c2 = document.createElement("td");
@@ -65,7 +66,7 @@ function createTicket() {
 			row.appendChild(c2);
 			row.appendChild(c3);
 			table.appendChild(row);
-			row.setAttribute("id", "Id#");
+			row.setAttribute("id", object[i]._id);
 		}
 	}).catch(() => { 
 		alert('something went wrong');

@@ -7,7 +7,7 @@ This is a JS file server side functionality
 const express = require('express');
 const app = express();
 const port = 80;
-app.use(express.static('./index.html')); // Loads HTML for UI
+app.use(express.static('./public_html')); // Loads HTML for UI
 const { default: mongoose } = require('mongoose');
 const parser = require('body-parser');
 const mongoDBURL = 'mongodb://127.0.0.1/Final';

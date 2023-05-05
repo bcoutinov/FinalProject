@@ -52,7 +52,7 @@ function showTicket() {
     document.getElementsByTagName("h1").innerText = "Ticket Id: " + object._id.slice(18-23);
     document.getElementsByTagName("h2").innerText = object.title;
     document.getElementsById("client").innerText = object.user;
-    ocument.getElementById("date").innerText = object.date;
+    document.getElementById("date").innerText = object.date;
     document.getElementById("type").innerText = object.type;
     document.getElementById("priority").innerText = object.priority; 
     document.getElementById("status").innerText = object.status;

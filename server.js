@@ -109,7 +109,10 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
 });
 
 // Returns a Json of tickets for one user
-app.get('/home', auth, (req, res) =>{ 
+app.get('/home', auth, (req, res) =>{
+  
+  res.sendFile('./public_html/home.html', {root: __dirname });
+  /* 
   let u = req.cookies.login.username;
   let p1 = user.findOne({username : u}).exec();
   p1.then( (results) => {
@@ -128,6 +131,7 @@ app.get('/home', auth, (req, res) =>{
   p1.catch((err) => {
     res.end(err);
   });
+  */
 });
 
 // Returns information for one ticket

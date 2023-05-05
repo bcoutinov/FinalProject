@@ -40,25 +40,3 @@ for (i = 0; i < coll.length; i++) {
 function statusAlert() {
 	alert("Status updated!");
 }
-
-// displays ticket data on page
-
-function showTicket() {
-  let url = '/get/ticket/';
-	let p = fetch(url);
-	let ps = p.then( (response) => {
-	  return response.json();
-	}).then((object) => { 
-    document.getElementsByTagName("h1").innerText = "Ticket Id: " + object._id.slice(18-23);
-    document.getElementsByTagName("h2").innerText = object.title;
-    document.getElementsById("client").innerText = object.user;
-    document.getElementById("date").innerText = object.date;
-    document.getElementById("type").innerText = object.type;
-    document.getElementById("priority").innerText = object.priority; 
-    document.getElementById("status").innerText = object.status;
-    document.getElementById("description").innerText = object.description;
-    document.getElementById("chatbox").innerText = object.chats;
-	}).catch(() => { 
-	  alert('something went wrong');
-	});
-}

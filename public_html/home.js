@@ -33,7 +33,7 @@ function createTicket() {
 	// should call viewTicket()
 	p.then(() => {
 	  console.log('Ticket Created');
-      alert("Ticket Created!");
+      	  alert("Ticket Created!");
 	  //viewTickets(); need to create
 	});
 	p.catch(() => { 

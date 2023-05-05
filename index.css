@@ -65,7 +65,7 @@ input {
     padding-right:10px;
 }
 
-#username, #password, #reg-username, #reg-password, label {
+#loginU, #loginP, #regU, #regP, label {
 	float: left;
 }
 

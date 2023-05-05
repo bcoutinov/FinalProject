@@ -6,18 +6,63 @@
 	-->
 
 <!DOCTYPE html>
-<html lang = "en">
-<head>
-	<meta charset = "utf-8">
-	<title></title>
-	<link rel = "stylesheet" 
-		type = "text/css" 
-		href = "./style.css">
-</head>
+    <html lang = "en">
+    <head>
+        <meta charset = "utf-8">
+        <title>ticket</title>
+        <link rel = "stylesheet" 
+            type = "text/css" 
+            href = "./ticket.css">
+        <link rel="icon" 
+            type="image/x-icon"
+            href="/images/favicon.ico">
+    </head>
+    
+    <body>
+        <h1>Ticket View</h1> 
 
-<body>
-	<script src = "./client.js"></script>
-</body>
+        <h2>Title</h2>
 
-</html>
+        <div class="left-container">
+            <dl>
+                <dt>Requested For:</dt>
+                    <dd id="client"></dd>
+                <dt>Created:</dt>
+                    <dd id="date"></dd>
+                <dt>Type:</dt>
+                    <dd id="type"></dd>
+                <dt>Priority:</dt>
+                    <dd id="priority"></dd>
+                <dt>Status</dt>
+                    <dd id="status"></dd>
+            </dl>
+        </div>
 
+        <div class="right-container">
+            <p>Description:</p>
+            <p id="description"></p>
+        </div>
+
+        <button class="open-button" onclick="openForm()">Chat</button>
+
+        <div class="chat-popup" id="chat-form">
+            <form class="form-container" name="message" action=""></form>
+                <div id="chatbox"></div>
+                <input name="user-msg" type="text" id="user-msg" />
+                <input name="submit-msg" type="submit" id="submit-msg" class="btn" value="Send" />
+                <button type="button" class="btn" id="button-close" onclick="closeForm()">Close</button>
+            </form>
+        </div>
+
+        <button type="button" class="collapsible">Update Status</button>
+        
+        <div class="content">
+            <input id="in-progress" type="submit" value="In-progress" onclick="statusAlert()">
+            <input id="complete" type="submit" value="Complete" onclick="statusAlert()">
+        </div>
+
+	<script src = "./ticket.js"></script>
+    </body>
+    
+    </html>
+    

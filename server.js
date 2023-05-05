@@ -156,7 +156,7 @@ app.get('/get/userTickets/', auth, (req,res) => {
 })
 
 // Returns information for one ticket
-app.get('/get/ticket/:id', auth, (req, res) => {
+app.get('/get/ticket/', auth, (req, res) => {
   let id = req.cookies.ticketId.id;
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {

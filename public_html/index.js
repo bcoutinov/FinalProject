@@ -9,6 +9,8 @@
 var loginU = document.getElementById("loginU");
 var loginP = document.getElementById("loginP");
 
+var url = "http://127.0.0.1"
+
 // Logs user into website
 function login(){
     let u = loginU.value;
@@ -25,20 +27,12 @@ function login(){
         redirect: "follow"
     };
 
-    fetch(url + '/login', requestOptions)
+    fetch(url + '/post/login', requestOptions)
         .then((response) => {
-            if(response.redirected == true){
-                window.location.href = response.url;
-            }
-            else{
-                response.text()
-                .then((text) =>{
-                    usrMsg.innerText = "Error logging in with that info";
-                });
-            }
+            alert(response);
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         });
 }
 
@@ -46,7 +40,7 @@ var regU = document.getElementById("regU");
 var regP = document.getElementById("regP");
 
 // Registers a user on the website
-function register(){
+function create(){
     let u = regU.value;
     let p = regP.value;
 
@@ -59,9 +53,6 @@ function register(){
          })
     };
 
-    fetch(url + '/add/user/', requestOptions)
-        .then((response) => response.text())
-        .then((text) => {
-            alert(text);
-        });
+    fetch(url + '/post/newUser/', requestOptions)
+        .then((response) => {});
 }

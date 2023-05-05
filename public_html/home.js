@@ -40,4 +40,4 @@ function createTicket() {
     p.catch(() => { 
       alert('something went wrong');
     });
-  }
+}

@@ -29,7 +29,15 @@ function login(){
 
     fetch(url + '/post/login', requestOptions)
         .then((response) => {
-            alert(response);
+            if (response.status == 200){
+                window.location.href = '/home';
+            }
+            else if (response.status == 201){
+                window.location.href = '/home_admin';
+            }
+            else{
+                alert("Incorrect Credentials")
+            }
         })
         .catch((error) => {
             console.log(error);

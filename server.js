@@ -108,7 +108,7 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
 });
 
 // Retrieves all tickets for admins
-app.get('get/adminTickets', auth, (req, res) => {
+app.get('get/adminTickets', auth, checkAdmin, (req, res) => {
   let p1 = ticket.find({}).exec();
   p1.then( (results) => {
       res.end(JSON.stringify(results));

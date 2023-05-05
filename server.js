@@ -76,6 +76,8 @@ var UserSchema = new Schema({
 var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
 
+
+
 // Adds a user to the db
 app.post('/post/newUser/', (req, res) => { 
   let u = req.body.username;
@@ -110,9 +112,6 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
 
 // Returns a Json of tickets for one user
 app.get('/home', auth, (req, res) =>{
-  
-  res.sendFile('./public_html/home.html', {root: __dirname });
-  /* 
   let u = req.cookies.login.username;
   let p1 = user.findOne({username : u}).exec();
   p1.then( (results) => {
@@ -121,7 +120,7 @@ app.get('/home', auth, (req, res) =>{
     let p2 = ticket.find({_id: id}).exec()
     p2.then((results) => {
       console.log(JSON.stringify(results));
-      res.sendFile('./public_html/home.html', {root: __dirname }, JSON.stringify(results));
+      res.sendFile('./public_html/home.html', {root: __dirname });
     });
     p2.catch((err) => {
       console.log("Couldn't find tickets");
@@ -131,7 +130,7 @@ app.get('/home', auth, (req, res) =>{
   p1.catch((err) => {
     res.end(err);
   });
-  */
+
 });
 
 // Returns information for one ticket
@@ -140,7 +139,7 @@ app.get('/get/ticket/:id', auth, (req, res) => {
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     console.log(JSON.stringify(results));
-    res.sendFile('./ticket.html', {root: __dirname }, JSON.stringify(results));
+    res.sendFile('./ticket.html', {root: __dirname }); 
   });
   p1.catch((err) => {
     res.end(err);
@@ -153,7 +152,8 @@ app.post('/post/newTicket/', auth, (req, res) => {
   let t = req.body.title;
   let u = req.cookies.login.username;
   let p = req.body.priority;
-  let date = date.toString()
+  let date = req.body.date;
+  let s = req.body.status;
   let typ = req.body.type;
   let desc = req.body.desc;
 
@@ -163,7 +163,7 @@ app.post('/post/newTicket/', auth, (req, res) => {
     priority: p,
     date: date,
     type: typ,
-    status: "open",
+    status: s,
     description: desc
   });
 
@@ -202,25 +202,25 @@ app.post('/post/login', (req, res) => {
   let p1 = user.findOne({"username": u}).exec();
   p1.then((results) => {
     if (results == null){
-      res.end("error logging in");
-      console.log("no user found");
+      res.sendStatus(202);
       return
     }
     else if (results.password == p){
       if (results.priv == 'a'){
         let sid = addSession(u, 'a');
         res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
-        res.redirect('/home_admin');
+        res.sendStatus(201);
       }
       else{
         let sid = addSession(u, 'u');
+        
         res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
-        res.redirect('/home');
+        res.sendStatus(200);
+        //res.redirect('/home');
       }
     }
     else{
-      console.log("bruh 2");
-      res.end(error);
+      res.end("error");
     }
   });
   p1.catch((err) => {

@@ -62,5 +62,12 @@ function create(){
     };
 
     fetch(url + '/post/newUser/', requestOptions)
-        .then((response) => {});
+        .then((response) => {
+            if (response.status == 200){
+                alert("New user registered!");
+            }
+            else{
+                alert("Error making user, try again.");
+            }
+        });
 }

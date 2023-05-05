@@ -1,4 +1,3 @@
-@@ -1,6 +1,42 @@
 /*  Author:     Carlton Louie, Brenda Coutino, Kianny Calvo
     Class:      CSC 337
     File:       client.js

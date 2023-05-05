@@ -18,8 +18,7 @@ function createTicket() {
     	if(requestType[i].checked) {
         	t = requestType[i].value;
 			break;
-    	}
-	}
+    	}}
 	let s = "Open"
 	// url and data are for the fetch request
 	let url = '/post/newTicket/';

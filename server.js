@@ -12,7 +12,7 @@ const { default: mongoose } = require('mongoose');
 const parser = require('body-parser');
 const mongoDBURL = 'INSERT - MONGODB URL';
 
-mongoose.connect(mongoDBURL, { useNewUrlParser: true});
+mongoose.connect(mongoDBURL, {useNewUrlParser: true});
 mongoose.connection.on('error', () => {
   console.log('There was a problem connection to mongoDB');
 });
@@ -102,6 +102,9 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
   p1.then( (results) => {
       res.sendFile('./admin.html', {root: __dirname }, JSON.stringify(results));
   });
+  p1.catch( (err) => {
+    res.end(err);
+  });
 });
 
 // Returns a Json of tickets for one user
@@ -134,6 +137,9 @@ app.get('/get/ticekt/:id', auth, (req, res) => {
   p1.then((results) => {
     console.log(JSON.stringify(results));
     res.sendFile('./ticket.html', {root: __dirname }, JSON.stringify(results));
+  });
+  p1.catch((error) => {
+    res.end(err);
   });
 });
 
@@ -214,7 +220,7 @@ app.post('/post/login', (req, res) => {
     }
   });
   p1.catch((error) => {
-    console.log(error);
+    res.end(error);
   });
 });
 

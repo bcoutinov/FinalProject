@@ -72,7 +72,7 @@ function openTicket(id){
             if (response.status == 200){
                 window.location.href = '/ticketView';
             }
-            else{
+            else if (response.status == 201){
                 window.location.href = '/home_admin';
             }
         })

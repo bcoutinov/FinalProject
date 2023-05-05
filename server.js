@@ -77,14 +77,15 @@ var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
 
 // Adds a user to the db
-app.post('/post/newUser/', auth, (req, res) => { 
+app.post('/post/newUser/', (req, res) => { 
   let u = req.body.username;
   let p = req.body.password;
-
+  console.log('bruh');
   var newUser = new user({
     username: u,
     password: p,
-    type: client
+    type: 'client',
+    priv: 'u'
   });
   let p1 = newUser.save();
   p1.then((doc => {
@@ -100,7 +101,7 @@ app.post('/post/newUser/', auth, (req, res) => {
 app.get('/home_admin', auth, checkAdmin, (req, res) => {
   let p1 = ticket.find({}).exec();
   p1.then( (results) => {
-      res.sendFile('./admin.html', {root: __dirname }, JSON.stringify(results));
+      res.sendFile('./public_html/admin.html', {root: __dirname }, JSON.stringify(results));
   });
   p1.catch( (err) => {
     res.end(err);
@@ -109,7 +110,6 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
 
 // Returns a Json of tickets for one user
 app.get('/home', auth, (req, res) =>{ 
-  res.sendFile('./home.html', {root: __dirname });
   let u = req.cookies.login.username;
   let p1 = user.findOne({username : u}).exec();
   p1.then( (results) => {
@@ -118,7 +118,7 @@ app.get('/home', auth, (req, res) =>{
     let p2 = ticket.find({_id: id}).exec()
     p2.then((results) => {
       console.log(JSON.stringify(results));
-      res.sendFile('./home.html', {root: __dirname }, JSON.stringify(results));
+      res.sendFile('./public_html/home.html', {root: __dirname }, JSON.stringify(results));
     });
     p2.catch((err) => {
       console.log("Couldn't find tickets");
@@ -205,12 +205,12 @@ app.post('/post/login', (req, res) => {
     else if (results.password == p){
       if (results.priv == 'a'){
         let sid = addSession(u, 'a');
-        res.cookie("login", {username: u, sid: sid, priv: priv}, {maxAge:120000});
+        res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
         res.redirect('/home_admin');
       }
       else{
         let sid = addSession(u, 'u');
-        res.cookie("login", {username: u, sid: sid, priv: priv}, {maxAge:120000});
+        res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
         res.redirect('/home');
       }
     }

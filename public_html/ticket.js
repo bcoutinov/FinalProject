@@ -41,7 +41,7 @@ function statusAlert() {
 	alert("Status updated!");
 }
 
-// displays individual ticket information
+// displays ticket data on page
 
 function showTicket() {
   let url = '/get/ticket/';

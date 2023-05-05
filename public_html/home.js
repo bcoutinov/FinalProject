@@ -41,3 +41,33 @@ function createTicket() {
       alert('something went wrong');
     });
 }
+
+// displays all client tickets
+  function viewClientTickets () {
+	let url = '/home/'; 
+	let p = fetch(url);
+	let ps = p.then( (response) => {
+	  return response.json();
+	}).then((objects) => { 
+	// appends tickets to client table
+		let html = "";
+		let table = document.getElementById("client-ticket-table");
+		for (i in objects) {
+			html = '<input type="button" value="ID?" class="view-ticket" onclick="openTicket(this)">'
+			var row = document.createElement("tr");
+			var c1 = document.createElement("td");
+			var c2 = document.createElement("td");
+			var c3 = document.createElement("td");
+			c1.innerHTML = html;
+			c2.innerText = objects[i].date;
+			c3.innerText = objects[i].priority;
+			row.appendChild(c1);
+			row.appendChild(c2);
+			row.appendChild(c3);
+			table.appendChild(row);
+			row.setAttribute("id", "Id#");
+		}
+	}).catch(() => { 
+		alert('something went wrong');
+	  });
+	}

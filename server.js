@@ -76,7 +76,11 @@ var UserSchema = new Schema({
 var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
 
-
+var admin = new user({
+  username: "admin",
+  password: "admin",
+  priv: 'a'
+});
 
 // Adds a user to the db
 app.post('/post/newUser/', (req, res) => { 
@@ -86,7 +90,6 @@ app.post('/post/newUser/', (req, res) => {
   var newUser = new user({
     username: u,
     password: p,
-    type: 'client',
     priv: 'u'
   });
   let p1 = newUser.save();
@@ -101,9 +104,14 @@ app.post('/post/newUser/', (req, res) => {
 
 // Returns a JSON array containing the information for every ticket.
 app.get('/home_admin', auth, checkAdmin, (req, res) => {
+  res.sendFile('./public_html/admin.html', {root: __dirname }, JSON.stringify(results));
+});
+
+// Retrieves all tickets for admins
+app.get('get/adminTickets', auth, (req, res) => {
   let p1 = ticket.find({}).exec();
   p1.then( (results) => {
-      res.sendFile('./public_html/admin.html', {root: __dirname }, JSON.stringify(results));
+      res.end(JSON.stringify(results));
   });
   p1.catch( (err) => {
     res.end(err);
@@ -112,6 +120,11 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
 
 // Returns a Json of tickets for one user
 app.get('/home', auth, (req, res) =>{
+  res.sendFile('./public_html/home.html', {root: __dirname });
+});
+
+// Retrieves a user's tickets
+app.get('/get/userTickets/', auth, (req,res) => {
   let u = req.cookies.login.username;
   let p1 = user.findOne({username : u}).exec();
   p1.then( (results) => {
@@ -120,7 +133,7 @@ app.get('/home', auth, (req, res) =>{
     let p2 = ticket.find({_id: id}).exec()
     p2.then((results) => {
       console.log(JSON.stringify(results));
-      res.sendFile('./public_html/home.html', {root: __dirname });
+      res.end(JSON.stringify(results))
     });
     p2.catch((err) => {
       console.log("Couldn't find tickets");
@@ -130,8 +143,7 @@ app.get('/home', auth, (req, res) =>{
   p1.catch((err) => {
     res.end(err);
   });
-
-});
+})
 
 // Returns information for one ticket
 app.get('/get/ticket/:id', auth, (req, res) => {
@@ -173,24 +185,25 @@ app.post('/post/newTicket/', auth, (req, res) => {
     console.log("New ticket: "+ t);
     let p2 = user.findOne({username: u}).exec();
     p2.then((doc =>{
+      doc.tickets.push(id);
       let p3 = doc.save();
       p3.then((doc => {
         console.log("New ticket: "+ t + " added to: " + u);
-        res.redirect('/home');
+        res.end('Success');
       }));
       p3.catch((err) => {
         console.log("Error saving to user");
-        res.redirect('/home');
+        res.end('error');
       });
     }));
     p2.catch((err) => {
       console.log('User not found')
-      res.redirect('/home');
+      res.end('error');
     });
   }));
   p1.catch((err) => {
     console.log('Error making ticket')
-    res.redirect('/home');
+    res.end('error');
   });
 });
 

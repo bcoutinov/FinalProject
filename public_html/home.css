@@ -60,15 +60,23 @@ thead {
 }
 
 th:nth-child(1) {
-    width: 33%;
+    width: 20%;
 }
 
 th:nth-child(2) {
-    width: 33%;
+    width: 20%;
 }
 
 th:nth-child(3) {
-    width: 33%;
+    width: 20%;
+}
+
+th:nth-child(4) {
+    width: 20%;
+}
+
+th:nth-child(5) {
+    width: 20%;
 }
 
 .ticket-list tbody tr:hover {

@@ -29,15 +29,13 @@
             <table>
                 <thead>
                     <th>Id</th>
+                    <th>Title</th>
                     <th>Created</th>
                     <th>Priority</th>
+                    <th>State</th>
                 </thead>
                 <tbody id="client-ticket-table">
-                <tr>
-                    <td>12345</td>  <!--Ticket Number-->
-                    <td>2023-05-03</td>  <!--Time Created-->
-                    <td>3</td>  <!--Priority-->
-                </tr>
+
                 </tbody>
             </table>
             </div>
@@ -47,10 +45,6 @@
         <h2>Create A Ticket</h2>
         <form>
           <table>
-            <tr>
-              <td><label for="name">Name:</label></td>
-              <td><input type="text" id="name" name="name" required></td>
-            </tr>
             <tr>
               <td>Ticket Type</td>
               <td id="radio-container">
@@ -64,7 +58,7 @@
             </tr>
             <tr>
               <td><label for="priority">Priority</label></td>
-              <td><select id="priority" name="type" required>
+              <td><select id="priority" name="type", required>
                 <option value="">Please Select a Priority Level</option>
                 <option value="1">1</option>
                 <option value="2">2</option>

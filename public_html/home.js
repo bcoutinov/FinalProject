@@ -6,8 +6,9 @@
     This file is the JS for the client home of the service desk
     */
 
+const url = "http://127.0.0.1"
+
 function createTicket() {
-    let u = document.getElementById('name').value;
     let d = new Date();
     let t = document.getElementById('title').value;
     let desc = document.getElementById('desc').value;
@@ -23,7 +24,7 @@ function createTicket() {
     let s = "Open"
     // url and data are for the fetch request
     let url = '/post/newTicket/';
-    let data = { user: u, date: d, title: t, desc: desc, 
+    let data = { date: d, title: t, desc: desc, 
         priority: priority, type: rt, status: s};
     // request
     let p = fetch(url, {
@@ -34,41 +35,82 @@ function createTicket() {
     // should call viewTicket()
     p.then(() => {
       console.log('Ticket Created');
-          alert("Ticket Created!");
-      viewClientTickets(); need to create
+      alert("Ticket Created!");
+      getTickets();
     });
     p.catch(() => { 
       alert('something went wrong');
     });
 }
 
-// displays all client tickets
-  function viewClientTickets () {
-	let url = '/home/'; 
-	let p = fetch(url);
-	let ps = p.then( (response) => {
-	  return response.json();
-	}).then((objects) => { 
-	// appends tickets to client table
-		let html = "";
-		let table = document.getElementById("client-ticket-table");
-		for (i in objects) {
-			var buttonValue = object[i]._id.slice(18,23);
-			html = '<input type="button" value=\''+ buttonValue +'\' class="view-ticket" onclick="openTicket(this)">'
-			var row = document.createElement("tr");
-			var c1 = document.createElement("td");
-			var c2 = document.createElement("td");
-			var c3 = document.createElement("td");
-			c1.innerHTML = html;
-			c2.innerText = objects[i].date;
-			c3.innerText = objects[i].priority;
-			row.appendChild(c1);
-			row.appendChild(c2);
-			row.appendChild(c3);
-			table.appendChild(row);
-			row.setAttribute("id", object[i]._id);
-		}
-	}).catch(() => { 
-		alert('something went wrong');
-	  });
-	}
+// Takes tickets and displays them on the webpage
+function getTickets(){
+  var httpRequest = new XMLHttpRequest();
+  if (!httpRequest) {
+      alert('Error');
+      return false;
+  }
+  httpRequest.onreadystatechange = () => {
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (httpRequest.status === 200) {
+              showTickets(httpRequest.responseText);
+          } 
+          else { alert('Error fetching Items'); }
+      }
+  }
+
+  httpRequest.open('GET', url + "/get/userTickets");
+  httpRequest.send();
+}
+
+var taskBody = document.getElementById("client-ticket-table");
+
+// Takes items and displays them on the webpage
+function showTickets(responseText){
+  let tasks = JSON.parse(responseText);
+  let taskStrings = [];
+
+  for (let i in tasks){
+      let tFunc = "openTicket('"+tasks[i]._id+"');";
+      let taskString = '<tr>';
+      let taskId = '<td onclick='+tFunc+'>' + tasks[i]._id.slice(18, 23) + '</td>';
+      let time = '<td>' + tasks[i].date + '</td>';
+      let priority = '<td>' + tasks[i].priority + '</td>';
+      let state = '<td>' + tasks[i].status + '</td>';
+      let title = '<td>' + tasks[i].title + '</td>';
+      let type = '<td>' + tasks[i].type + '</td>';
+      let user = '<td>' + tasks[i].user + '</td>';
+      taskString = taskString + taskId + title + time + priority + state + "</tr>";
+      taskStrings.push(taskString);
+  }
+
+  let htmlText =  taskStrings.join("");
+
+  taskBody.innerHTML = htmlText;
+}
+
+// Opens the ticket view page
+function openTicket(id){
+  let requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+          ticketId : id,
+       }),
+  };
+
+  fetch(url + '/post/ticketView', requestOptions)
+      .then((response) => {
+          if (response.status == 200){
+              window.location.href = '/ticketView';
+          }
+          else{
+              window.location.href = '/home';
+          }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+}
+
+getTickets()

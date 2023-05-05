@@ -6,55 +6,89 @@
 	-->
 
 <!DOCTYPE html>
-<html lang = "en">
-<head>
-	<meta charset = "utf-8">
-	<title></title>
-	<link rel = "stylesheet" 
-		type = "text/css" 
-		href = "./style.css">
-</head>
-
-<body>
-	<div id = "header">
-	<h1>Service Desk</h1>
-	</div>
-	
-	<div id = "leftBar">
-		<table style="width:100%">
-			<tr>
-				<th>Number</th>
-				<th>Created</th>
-				<th>Priority</th>
-			</tr>
-			<tr>
-				<td>12345</td>  <!--Ticket Number-->
-				<td>2023-05-03</td>  <!--Time Created-->
-				<td>3</td>  <!--Priority-->
-			</tr>
-		</table>
-	</div>
-	
-	<div id = "rightBar">
-	<h2>Create A Ticket</h2>
-	<form>
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name"><br><br>
-			<label>Ticket Type</label>
-			<input type="radio" name="help" id="help">Help Request
-			<input type="radio" name="purchase" id="purchase">Purchase Request
-			<input type="radio" name="website" id="website">Website Request<br>
-			<label>1</label>
-			<input type="range" min="1 max="5" value="1" id="priority">
-			<label>5</label><br>
-      <label for="title">Title</label>
-      <input type="text" id="title" name="title"><br><br>
-      <label for="desc">Description</label>
-      <input type="text" id="desc" name="desc"><br><br>
-      <input type="submit" value="Submit">
-    </form>
-	</div>
-	<script src = "./client.js"></script>
-</body>
-
-</html>
+    <html lang = "en">
+    <head>
+        <meta charset = "utf-8">
+        <title></title>
+        <link rel = "stylesheet" 
+            type = "text/css" 
+            href = "./home.css">
+        <link rel="icon" 
+          type="image/x-icon"
+          href="/images/favicon.ico">
+    </head>
+    
+    <body>
+        <div id = "header">
+        <h1>Service Desk</h1>
+        </div>
+        
+        <div id = "left-bar">
+            <h2>Your Tickets</h2>
+            <div class="ticket-list">
+            <table>
+                <thead>
+                    <th>Number</th>
+                    <th>Created</th>
+                    <th>Priority</th>
+                </thead>
+                <tbody id="client-ticket-table">
+                <tr>
+                    <td>12345</td>  <!--Ticket Number-->
+                    <td>2023-05-03</td>  <!--Time Created-->
+                    <td>3</td>  <!--Priority-->
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        
+        <div id = "right-bar">
+        <h2>Create A Ticket</h2>
+        <form>
+          <table>
+            <tr>
+              <td><label for="name">Name:</label></td>
+              <td><input type="text" id="name" name="name" required></td>
+            </tr>
+            <tr>
+              <td>Ticket Type</td>
+              <td id="radio-container">
+                <input type="radio" name="type" id="help" value="help" required>
+                <label for="help">Help Request</label>
+                <input type="radio" name="type" id="purchase" value="purchase">
+                <label for="purchase">Purchase Request</label>
+                <input type="radio" name="type" id="website" value="website">
+                <label for="website">Website Request</label>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="priority">Priority</label></td>
+              <td><select id="priority" name="type" required>
+                <option value="">Please Select a Priority Level</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select></td>
+            <tr>
+              <td><label for="title">Title</label></td>
+              <td><input type="text" id="title" name="title" required></td>
+            </tr>
+            <tr>
+              <td><label for="desc">Description</label></td>
+              <td><textarea id="desc" name="desc" rows="10" cols="40"required></textarea></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><input id="submit"  type="submit" value="Create Ticket"></td>
+            </tr>
+          </table>
+        </form>
+        </div>
+        <script src = "./client.js"></script>
+    </body>
+    
+    </html>
+    

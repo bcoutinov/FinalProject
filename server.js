@@ -139,10 +139,8 @@ app.get('/get/userTickets/', auth, (req,res) => {
   let p1 = user.findOne({username : u}).exec();
   p1.then( (results) => {
     let id = results.tickets
-    console.log(id);
     let p2 = ticket.find({_id: id}).exec()
     p2.then((results) => {
-      console.log(JSON.stringify(results));
       res.end(JSON.stringify(results))
     });
     p2.catch((err) => {
@@ -160,7 +158,6 @@ app.get('/get/ticket/', auth, (req, res) => {
   let id = req.cookies.ticketId.id;
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
-    console.log(JSON.stringify(results));
     res.end(JSON.stringify(results));
   });
   p1.catch((err) => {

@@ -1,48 +1,71 @@
-<!--Author: 	Carlton Louie, Brenda Coutino
+<!--Author: 	Carlton Louie, Brenda Coutino, Kianny Calvo
   Class:		CSC 337
 	File:		index.html
 	Assignment:	Final Project
 	This file will work as the login page for the service desk.
 	-->
 
-<!DOCTYPE html>
-<html lang = "en">
-<head>
-	<meta charset = "utf-8">
-	<title>Login</title>
-	<link rel = "stylesheet" 
-		type = "text/css" 
-		href = "./style.css">
-</head>
-
-<body>
-	<div id = "header">
-		<h1>Service Desk</h1>
-	</div>
-	
-	<div id = "leftBar">
-		<h2>Login</h2>
-		<form>
-			<label for="username">Username</label><br>
-			<input type="text" id="username" name="username"><br><br>
-			<label for="password">Password</label><br>
-			<input type="password" id="password" name="password"><br><br>
-			<input type="submit" value="Submit">
-		</form>
-	</div>
-	
-	<div id = "rightBar">
-		<h2>Register</h2>
-		<form>
-			<label for="username">Username</label><br>
-			<input type="text" id="username" name="username"><br><br>
-			<label for="password">Password</label><br>
-			<input type="password" id="password" name="password"><br><br>
-			<input type="submit" value="Create Account">
-		</form>
-	</div>
-	
-	<script src = "./client.js"></script>
-</body>
-
-</html>
+    <!DOCTYPE html>
+    <html lang = "en">
+    <head>
+        <meta charset = "utf-8">
+        <title>Login</title>
+        <link rel = "stylesheet" 
+            type = "text/css" 
+            href = "./index.css">
+        <link rel="icon" 
+            type="image/x-icon"
+            href="/images/favicon.ico">
+    </head>
+    
+    <body>
+        <div id = "header">
+            <h1>Service Desk</h1>
+        </div>
+        
+        <div class = "left-bar">
+            <h2>Login</h2>
+            <form>
+                <table>
+                    <tr>
+                        <td><label for="username">Username:</label></td>
+                        <td><input type="text" id="username" name="username" required></tr>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password:</label></td>
+                        <td><input type="password" id="password" name="password" required></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input id="submit" type="submit" value="Login">
+                    </tr>
+                </table>
+            </form>
+            </form>
+        </div>
+        
+        <div class = "right-bar">
+            <h2>Register</h2>
+            <form>
+                <table>
+                <tr>
+                    <td><label for="username">Username:</label></td>
+                    <td><input type="text" id="reg-username" name="username" required></tr>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="reg-password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input id="reg-submit" type="submit" value="Create Account"></td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        
+        <script src = "./client.js"></script>
+    </body>
+    
+    </html>
+    

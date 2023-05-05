@@ -86,25 +86,35 @@ var admin = new user({
 app.post('/post/newUser/', (req, res) => { 
   let u = req.body.username;
   let p = req.body.password;
-  console.log('bruh');
-  var newUser = new user({
-    username: u,
-    password: p,
-    priv: 'u'
+
+  let p1 = user.findOne({username : u}).exec();
+  p1.then( (results) => {
+    if (results == null) { 
+      var newUser = new user({
+        username: u,
+        password: p,
+        priv: 'u'
+      });
+      let p2 = newUser.save();
+      p2.then((doc => {
+        res.sendStatus(200);
+        console.log("Added User: "+ u + " " +p);
+      }))
+      p2.catch((err) => {
+        res.sendStatus(201);
+        console.log('Error')
+      });
+    }
+    else{
+      res.sendStatus (201);
+    }
   });
-  let p1 = newUser.save();
-  p1.then((doc => {
-    res.end('User Created!');
-    console.log("Added User: "+ u + " " +p);
-  }))
-  p1.catch((err) => {
-    console.log('Error')
-  });
+
 });
 
 // Returns a JSON array containing the information for every ticket.
 app.get('/home_admin', auth, checkAdmin, (req, res) => {
-  res.sendFile('./public_html/admin.html', {root: __dirname }, JSON.stringify(results));
+  res.sendFile('./public_html/admin.html', {root: __dirname });
 });
 
 // Retrieves all tickets for admins
@@ -226,10 +236,8 @@ app.post('/post/login', (req, res) => {
       }
       else{
         let sid = addSession(u, 'u');
-        
         res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
         res.sendStatus(200);
-        //res.redirect('/home');
       }
     }
     else{

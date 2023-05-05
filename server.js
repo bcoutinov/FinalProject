@@ -10,7 +10,7 @@ const port = 80;
 app.use(express.static('./index.html')); // Loads HTML for UI
 const { default: mongoose } = require('mongoose');
 const parser = require('body-parser');
-const mongoDBURL = 'INSERT - MONGODB URL';
+const mongoDBURL = 'mongodb://127.0.0.1/Final';
 
 mongoose.connect(mongoDBURL, {useNewUrlParser: true});
 mongoose.connection.on('error', () => {
@@ -47,7 +47,7 @@ function checkAdmin(req, res, next){
     next()
   }
   else{
-    return res.end('Access Denied');
+    res.end('Access Denied');
   }
 }
 
@@ -131,14 +131,14 @@ app.get('/home', auth, (req, res) =>{
 });
 
 // Returns information for one ticket
-app.get('/get/ticekt/:id', auth, (req, res) => {
+app.get('/get/ticket/:id', auth, (req, res) => {
   let id = req.params.keyword;
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     console.log(JSON.stringify(results));
     res.sendFile('./ticket.html', {root: __dirname }, JSON.stringify(results));
   });
-  p1.catch((error) => {
+  p1.catch((err) => {
     res.end(err);
   });
 });
@@ -157,7 +157,7 @@ app.post('/post/newTicket/', auth, (req, res) => {
     title: t,
     user: u,
     priority: p,
-    date: date, // use js date function
+    date: date,
     type: typ,
     status: "open",
     description: desc
@@ -219,8 +219,8 @@ app.post('/post/login', (req, res) => {
       res.end(error);
     }
   });
-  p1.catch((error) => {
-    res.end(error);
+  p1.catch((err) => {
+    res.end(err);
   });
 });
 

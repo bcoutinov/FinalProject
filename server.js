@@ -118,7 +118,7 @@ app.get('/home_admin', auth, checkAdmin, (req, res) => {
 });
 
 // Retrieves all tickets for admins
-app.get('get/adminTickets', auth, checkAdmin, (req, res) => {
+app.get('/get/adminTickets', auth, checkAdmin, (req, res) => {
   let p1 = ticket.find({}).exec();
   p1.then( (results) => {
       res.end(JSON.stringify(results));
@@ -157,15 +157,27 @@ app.get('/get/userTickets/', auth, (req,res) => {
 
 // Returns information for one ticket
 app.get('/get/ticket/:id', auth, (req, res) => {
-  let id = req.params.keyword;
+  let id = req.cookies.ticketId.id;
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     console.log(JSON.stringify(results));
-    res.sendFile('./ticket.html', {root: __dirname }); 
+    res.end(JSON.stringify(results));
   });
   p1.catch((err) => {
     res.end(err);
   });
+});
+
+// Returns the page for the ticketView page
+app.get('/ticketView', auth, (req,res) => {
+  res.sendFile('./public_html/ticket.html', {root: __dirname });
+});
+
+// Creates a cookie of ticket id used for ticketViewer
+app.post('/post/ticketView', auth, (req,res) => {
+  let id = req.body.ticketId
+  res.cookie("ticketId", {id: id}, {maxAge:120000});
+  res.sendStatus(200);
 });
 
 // Adds a ticket to the db

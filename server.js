@@ -77,7 +77,7 @@ var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
 
 // Adds a user to the db
-app.post('/post/newUser/', (req, res) => { 
+app.post('/post/newUser/', auth, (req, res) => { 
   let u = req.body.username;
   let p = req.body.password;
 
@@ -97,15 +97,16 @@ app.post('/post/newUser/', (req, res) => {
 });
 
 // Returns a JSON array containing the information for every ticket.
-app.get('/get/tickets/', auth, checkAdmin, (req, res) => { 
+app.get('/home_admin', auth, checkAdmin, (req, res) => {
   let p1 = ticket.find({}).exec();
   p1.then( (results) => {
-      res.end(JSON.stringify(results));
+      res.sendFile('./admin.html', {root: __dirname }, JSON.stringify(results));
   });
 });
 
 // Returns a Json of tickets for one user
-app.get('/get/tickets/:username', auth, (req, res) =>{ 
+app.get('/home', auth, (req, res) =>{ 
+  res.sendFile('./home.html', {root: __dirname });
   let u = req.cookies.login.username;
   let p1 = user.findOne({username : u}).exec();
   p1.then( (results) => {
@@ -114,7 +115,7 @@ app.get('/get/tickets/:username', auth, (req, res) =>{
     let p2 = ticket.find({_id: id}).exec()
     p2.then((results) => {
       console.log(JSON.stringify(results));
-      res.end(JSON.stringify(results));
+      res.sendFile('./home.html', {root: __dirname }, JSON.stringify(results));
     });
     p2.catch((err) => {
       console.log("Couldn't find tickets");
@@ -132,17 +133,17 @@ app.get('/get/ticekt/:id', auth, (req, res) => {
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     console.log(JSON.stringify(results));
-    res.end(JSON.stringify(results));
+    res.sendFile('./ticket.html', {root: __dirname }, JSON.stringify(results));
   });
 });
 
 // Adds a ticket to the db
-app.post('/post/tickets/', auth, (req, res) => {
+app.post('/post/newTicket/', auth, (req, res) => {
 
   let t = req.body.title;
-  let u = req.body.username;  
+  let u = req.cookies.login.username;
   let p = req.body.priority;
-  let date = req.body.date;
+  let date = date.toString()
   let typ = req.body.type;
   let desc = req.body.desc;
 
@@ -150,7 +151,7 @@ app.post('/post/tickets/', auth, (req, res) => {
     title: t,
     user: u,
     priority: p,
-    date: date,
+    date: date, // use js date function
     type: typ,
     status: "open",
     description: desc
@@ -198,12 +199,14 @@ app.post('/post/login', (req, res) => {
     else if (results.password == p){
       if (results.priv == 'a'){
         let sid = addSession(u, 'a');
+        res.cookie("login", {username: u, sid: sid, priv: priv}, {maxAge:120000});
+        res.redirect('/home_admin');
       }
       else{
         let sid = addSession(u, 'u');
+        res.cookie("login", {username: u, sid: sid, priv: priv}, {maxAge:120000});
+        res.redirect('/home');
       }
-      res.cookie("login", {username: u, sid: sid}, {maxAge:120000});
-      res.redirect('/home');
     }
     else{
       console.log("bruh 2");
@@ -241,7 +244,6 @@ app.post('/post/updtMsg', auth, (req,res) => {
   let id = req.body.id;
   let stat = req.body.stat;
 
-  let msgItm = [u, msg];
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     results.status = stat;
@@ -254,11 +256,6 @@ app.post('/post/updtMsg', auth, (req,res) => {
   p1.catch((err) => {
     res.end('Ticket not found');
   });
-});
-
-// Redirects back to the home page
-app.get('/home', auth, (req,res) =>{
-  res.redirect('/home.html');
 });
 
 app.listen(port, () => {

@@ -17,7 +17,7 @@ function createTicket() {
     var rt;
     for(var i = 0; i < requestType.length; i++) {
         if(requestType[i].checked) {
-            t = requestType[i].value;
+            rt = requestType[i].value;
             break;
         }}
     let s = "Open"

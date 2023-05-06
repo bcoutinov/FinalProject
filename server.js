@@ -31,7 +31,7 @@ app.listen(port, () => {
 var Schema = mongoose.Schema;
 
 // Ticket schema
-var TicketSchema = new Schema({
+var ticketSchema = new Schema({
   title: String,
   user: String,
   priority: Number, // Between 0-9, 9 being the highest
@@ -43,15 +43,15 @@ var TicketSchema = new Schema({
 });
 
 // User schema
-var UserSchema = new Schema({
+var userSchema = new Schema({
   username: String,
   password: String,
   priv: String, // u for user, a for admin
   tickets: []
 });
 
-var ticket = mongoose.model('model', TicketSchema);
-var user = mongoose.model('user', UserSchema);
+var ticket = mongoose.model('model', ticketSchema);
+var user = mongoose.model('user', userSchema);
 
 // Hardcoded Admin into the system
 var admin = new user({

@@ -111,12 +111,12 @@ label {
     padding-right:10px;
 }
 
-#name, #priority, #title, 
+#priority, #title, 
 #desc, label {
     float:left;
 }
 
-#name, #title {
+#title {
     width: 308px;
 }
 

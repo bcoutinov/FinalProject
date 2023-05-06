@@ -280,6 +280,15 @@ app.post('/post/ticketView', auth, (req,res) => {
 
 // Returns information for one ticket in a JSON string
 app.get('/get/ticket/', auth, (req, res) => {
+  
+  // Used for displaying the update status buttons
+  if (req.cookies.login.priv == 'a'){ // Checks for admin
+    res.status(201);
+  }
+  else {
+    res.status(200);
+  }
+
   let id = req.cookies.ticketId.id;
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {

@@ -40,7 +40,7 @@ function showTickets(responseText){
 
         let tFunc = "openTicket('"+tasks[i]._id+"');";
         let taskString = '<tr>';
-        let taskId = '<td onclick='+tFunc+'>' + tasks[i]._id.slice(18, 23) + '</td>';
+        let taskId = '<td onclick='+tFunc+'>' + tasks[i]._id.slice(19, 24) + '</td>';
         let time = '<td>' + tasks[i].date + '</td>';
         let priority = '<td>' + tasks[i].priority + '</td>';
         let state = '<td>' + tasks[i].status + '</td>';

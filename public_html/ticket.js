@@ -1,8 +1,8 @@
 /*	Author: 	Carlton Louie, Kianny Calvo, Brenda Coutino
-	Class:		CSC 337
-	File:		ticket.js
-	Assignment:	Final Project
-	This file is the javascript for the ticket page functionality.
+    Class:		CSC 337
+    File:		ticket.js
+    Assignment:	Final Project
+    This file is the javascript for the ticket page functionality.
 */
 
 const url = "http://127.0.0.1"
@@ -19,8 +19,8 @@ function closeForm () {
     document.getElementById("chat-form").style.display = "none";
 }
 
-/* 	sendMsg modifies ticket chats in the database by adding a user generated
-	string to the end of the chats.
+/*  sendMsg modifies ticket chats in the database by adding a user generated
+    string to the end of the chats.
 */
 
 function sendMsg(){
@@ -45,8 +45,8 @@ function sendMsg(){
       });
 }
 
-/*	The variables coll and i, and the for loop allows the admin user to click on a collapsible 
-	button and display two other buttons.
+/*  The variables coll and i, and the for loop allows the admin user to click on a collapsible 
+    button and display two other buttons.
 */
 
 var coll = document.getElementsByClassName("collapsible");
@@ -64,9 +64,9 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
-/* 	The showTicket function first verifies the user privilege by checking the status code
-	and then changing the collapsible display. Next it displays the ticket object data on the page.
-	It uses a for loop to format how the chat string will appear in the chat area.
+/*  The showTicket function first verifies the user privilege by checking the status code
+    and then changing the collapsible display. Next it displays the ticket object data on the page.
+    It uses a for loop to format how the chat string will appear in the chat area.
 */
 
 function showTicket() {
@@ -98,10 +98,10 @@ function showTicket() {
 	});
 }
 
-/*	The statusUpdate function uses the provided elements value to modify the 
-	Ticket object's status. Upon completion of this action, the user will be alerted
-	of the change and the showTicket function will be called to update the page's
-	display.
+/*  The statusUpdate function uses the provided elements value to modify the 
+    Ticket object's status. Upon completion of this action, the user will be alerted
+    of the change and the showTicket function will be called to update the page's
+    display.
 */
 
 function statusUpdate(element) {

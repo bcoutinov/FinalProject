@@ -8,12 +8,14 @@
 
 const url = "http://127.0.0.1"
 
+// Creates a new ticket under the user that is logged in
 function createTicket() {
     let d = new Date();
     let t = document.getElementById('title').value;
     let desc = document.getElementById('desc').value;
     let priority = document.getElementById('priority').value;
-    // these two var and for loop get the user selected radio value
+    
+    // Gets the user selected radio value (type of ticket)
     var requestType = document.getElementsByName('type');
     var rt;
     for(var i = 0; i < requestType.length; i++) {
@@ -21,18 +23,22 @@ function createTicket() {
             rt = requestType[i].value;
             break;
         }}
+    
     let s = "Open"
-    // url and data are for the fetch request
+    
+    // Used for the fetch request
     let url = '/post/newTicket/';
     let data = { date: d, title: t, desc: desc, 
         priority: priority, type: rt, status: s};
-    // request
+    
+    // Fetch request
     let p = fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: {"Content-Type": "application/json"} // adjust language w/ server
+      headers: {"Content-Type": "application/json"} // Adjust language with server
     });
-    // should call viewTicket()
+    
+    // Calls viewTicket()
     p.then(() => {
       console.log('Ticket Created');
       alert("Ticket Created!");

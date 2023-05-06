@@ -74,7 +74,7 @@ input {
 	width: 100%;
 }
 
-#submit, #reg-submit {
+#submit, #regSubmit {
 	background-color: rgb(71, 75, 68, 0.5);
     color: white;
     border: none;
@@ -85,6 +85,6 @@ input {
 	margin-top: 10px;
 }
 
-#submit:hover , #reg-submit:hover {
+#submit:hover , #regSubmit:hover {
 	background-color: rgb(71, 75, 68);
 }

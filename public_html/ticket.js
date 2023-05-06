@@ -91,8 +91,9 @@ function statusUpdate(element) {
     body: JSON.stringify(newStatus),
     headers: {"Content-Type": "application/json"}
     });
-    p.then(() => { 
+    p.then(() => {
       console.log('Status Updated');
+      alert("Status updated!");
       showTicket();
     });
     p.catch(() => { 

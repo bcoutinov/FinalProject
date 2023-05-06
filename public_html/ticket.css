@@ -34,7 +34,7 @@ h2 {
     overflow: auto;
 }
 
-.left-container {
+.leftContainer {
     position: fixed;
 	right: 50%;
     left: 1%;
@@ -47,7 +47,7 @@ h2 {
 
 }
 
-.right-container {
+.rightContainer {
     position: fixed;
 	left: 50%;
     right: 1%;
@@ -59,7 +59,7 @@ h2 {
     
 }
 
-.open-button {
+.openButton {
     position: fixed;
     bottom: 20px;
     left: 20px;
@@ -73,7 +73,7 @@ h2 {
     opacity: 0.8;
 }
 
-.chat-popup {
+.chatPopup {
   display: none;
   background-size: 20px 20px;
   background-image: radial-gradient(circle, lightgrey 1px, white 1px);
@@ -90,14 +90,14 @@ h2 {
   justify-content: center;
 }
 
-#chatbox {
+#chatBox {
   position: relative;
   width: 96%;
   height: 75%;
   border: 2px solid lightgrey;
 }
 
-#user-msg {
+#userMsg {
   background: transparent;
   cursor: pointer;
   border: 2px solid lightgrey;
@@ -105,16 +105,16 @@ h2 {
   line-height: 34px;
 }
 
-#user-msg, #submit-msg {
+#userMsg, #submitMsg {
   display: inline-block;
   margin-top: 10px;
 }
 
-#submit-msg {
+#submitMsg {
   width: 30%;
 }
 
-#button-close {
+#buttonClose {
   width: 96%;
 }
 
@@ -134,7 +134,7 @@ h2 {
   background-color: #555;
 }
 
-.form-container, .open-button:hover {
+.formContainer, .openButton:hover {
   background-color: #555;
 }
 
@@ -152,7 +152,7 @@ h2 {
   opacity: 0.8;
 }
 
-#in-progress, #closed {
+#inProgress, #closed {
   width:200px;
   padding: 10px;
   background-color: rgb(71, 75, 68, 0.5);
@@ -169,13 +169,13 @@ h2 {
   bottom: 80px;
 }
 
-#in-progress {
+#inProgress {
   position: fixed;
   right: 20px;
   bottom: 140px;
 }
 
-#closed:hover, #in-progress:hover {
+#closed:hover, #inProgress:hover {
   background-color: #555;
 }
 

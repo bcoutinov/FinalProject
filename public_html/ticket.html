@@ -6,62 +6,62 @@
 -->
 
 <!DOCTYPE html>
-    <html lang = "en">
-    <head>
-        <meta charset = "utf-8">
-        <title>Ticket</title>
-        <link rel = "stylesheet" 
-            type = "text/css" 
-            href = "./ticket.css">
-        <link rel="icon" 
-            type="image/x-icon"
-            href="./images/favicon.ico">
-    </head>
-    
-    <body>
-        <h1>Ticket View</h1> 
+<html lang = "en">
+<head>
+    <meta charset = "utf-8">
+    <title>Ticket</title>
+    <link rel = "stylesheet" 
+        type = "text/css" 
+        href = "./ticket.css">
+    <link rel="icon" 
+        type="image/x-icon"
+        href="./images/favicon.ico">
+</head>
 
-        <h2 id="title">Ticket Title</h2>
+<body>
+    <h1>Ticket View</h1> 
 
-        <div class="left-container">
-            <dl>
-                <dt>Requested For:</dt>
-                    <dd id="client"></dd>
-                <dt>Created:</dt>
-                    <dd id="date"></dd>
-                <dt>Type:</dt>
-                    <dd id="type"></dd>
-                <dt>Priority:</dt>
-                    <dd id="priority"></dd>
-                <dt>Status</dt>
-                    <dd id="status"></dd>
-            </dl>
-        </div>
+    <h2 id="title">Ticket Title</h2>
 
-        <div class="right-container">
-            <p>Description:</p>
-            <p id="description"></p>
-        </div>
+    <div class="left-container">
+        <dl>
+            <dt>Requested For:</dt>
+                <dd id="client"></dd>
+            <dt>Created:</dt>
+                <dd id="date"></dd>
+            <dt>Type:</dt>
+                <dd id="type"></dd>
+            <dt>Priority:</dt>
+                <dd id="priority"></dd>
+            <dt>Status</dt>
+                <dd id="status"></dd>
+        </dl>
+    </div>
 
-        <button class="open-button" onclick="openForm()">Chat</button>
+    <div class="right-container">
+        <p>Description:</p>
+        <p id="description"></p>
+    </div>
 
-        <div class="chat-popup" id="chat-form">
-            <form class="form-container" name="message"></form>
-                <div id="chatbox"></div>
-                <input name="user-msg" type="text" id="user-msg">
-                <input name="submit-msg" type="submit" id="submit-msg" class="btn" value="Send" onclick="sendMsg()">
-                <button type="button" class="btn" id="button-close" onclick="closeForm()">Close</button>
-        </div>
+    <button class="open-button" onclick="openForm()">Chat</button>
 
-        <button type="button" class="collapsible">Update Status</button>
-        
-        <div class="content">
-            <input id="in-progress" type="submit" value="In-progress" onclick="statusUpdate(this)">
-            <input id="closed" type="submit" value="Complete" onclick="statusUpdate(this)">
-        </div>
+    <div class="chat-popup" id="chat-form">
+        <form class="form-container" name="message"></form>
+        <div id="chatbox"></div>
+        <input name="user-msg" type="text" id="user-msg">
+        <input name="submit-msg" type="submit" id="submit-msg" class="btn" value="Send" 
+            onclick="sendMsg()">
+        <button type="button" class="btn" id="button-close" onclick="closeForm()">Close</button>
+    </div>
 
-	<script src = "./ticket.js"></script>
-    </body>
-    
-    </html>
-    
+    <button type="button" class="collapsible">Update Status</button>
+
+    <div class="content">
+        <input id="in-progress" type="submit" value="In-progress" onclick="statusUpdate(this)">
+        <input id="closed" type="submit" value="Complete" onclick="statusUpdate(this)">
+    </div>
+
+    <script src = "./ticket.js"></script>
+</body>
+
+</html>

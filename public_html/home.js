@@ -32,19 +32,19 @@ function createTicket() {
     
     // Fetch request
     let p = fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {"Content-Type": "application/json"}
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {"Content-Type": "application/json"}
     });
     
     // Calls viewTicket()
     p.then(() => {
-      console.log('Ticket Created');
-      alert("Ticket Created!");
-      getTickets();
+        console.log('Ticket Created');
+        alert("Ticket Created!");
+        getTickets();
     });
     p.catch(() => { 
-      alert('something went wrong');
+        alert('something went wrong');
     });
 }
 
@@ -54,7 +54,7 @@ function getTickets(){
     if (!httpRequest) {
         alert('Error');
         return false;
-  }
+    }
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {

@@ -24,7 +24,7 @@ h2 {
     text-align: center;
 }
 
-#left-bar{
+#leftBar{
 	position: fixed;
 	left: 0;
 	right: 50%;
@@ -35,14 +35,14 @@ h2 {
     overflow-y: auto;
 }
 
-.ticket-list table {
+.ticketList table {
     margin-left: 5px;
     width: 95%;
     height: 80%;
     table-layout: fixed;
 }
 
-.ticket-list table td, table th {
+.ticketList table td, table th {
     max-width: 0;
     overflow: hidden;
     text-overflow: clip;
@@ -79,7 +79,7 @@ th:nth-child(5) {
     width: 20%;
 }
 
-.ticket-list tbody tr:hover {
+.ticketList tbody tr:hover {
     background-color: #FFFBF1;
     overflow: visible;
     white-space: normal;
@@ -87,7 +87,7 @@ th:nth-child(5) {
     z-index: 2;
 }
 
-#right-bar{
+#rightBar{
 	position: fixed;
 	left: 50%;
 	right: 0;
@@ -140,7 +140,7 @@ label {
     background-color: rgb(71, 75, 68);
 }
 
-#radio-container {
+#radioContainer {
     width: 308px;
     display: flex;
     justify-content: center;

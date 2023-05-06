@@ -76,7 +76,13 @@ function showTicket() {
     document.getElementById("priority").innerText = object.priority; 
     document.getElementById("status").innerText = object.status;
     document.getElementById("description").innerText = object.description;
-    document.getElementById("chatbox").innerText = object.chats;
+    
+    let chatString = [];
+    for (let i = 0; i < object.chats.length; i++){
+      chatString[i] = object.chats[i][0] + " : " + object.chats[i][1] + "\n";
+    }
+    chatString = chatString.join("");
+    document.getElementById("chatbox").innerText = chatString;
 	}).catch(() => { 
 	  alert('something went wrong');
 	});

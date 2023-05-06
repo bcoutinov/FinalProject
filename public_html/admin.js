@@ -45,7 +45,7 @@ function showTickets(responseText){
         let title = '<td>' + tasks[i].title + '</td>';
         let type = '<td>' + tasks[i].type + '</td>';
         let user = '<td>' + tasks[i].user + '</td>';
-        taskString= taskString + taskId + time + priority + status + title + type + user + "</tr>";
+        taskString=taskString + taskId + time + priority + status + title + type + user + "</tr>";
         taskStrings.push(taskString);
     }
     let htmlText =  taskStrings.join("");

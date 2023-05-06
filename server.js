@@ -1,7 +1,7 @@
 /*
 Carlton Louie
 Mar. 21 2023
-This is a JS file server side functionality
+This is a JS file server side functionality for the RescueMe help desk
 */
 
 const express = require('express');
@@ -23,33 +23,11 @@ app.use(parser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-var sessions = {};
 
-// Adds a session id for each user
-function addSession(user, adminPriv){
-	let sessionId = Math.floor(Math.random()*100000);
-	let sessionStart = Date.now();
-	sessions[user] =  {'sid' : sessionId, 'start' : sessionStart, 'priv' : adminPriv};
-  return sessionId;
-}
+app.listen(port, () => {
+  console.log(`Server running at ${port}`);
+});
 
-// Checks if it is a valid session id
-function doesUserHaveSession(user, sessionId){
-  let entry = sessions[user];
-  if (entry!=undefined) {
-    return entry.sid == sessionId;
-  }
-}
-
-// Checks if user is an admin
-function checkAdmin(req, res, next){
-  if (sessions[req.cookies.login.username].priv == 'a'){
-    next()
-  }
-  else{
-    res.end('Access Denied');
-  }
-}
 
 var Schema = mongoose.Schema;
 
@@ -57,11 +35,11 @@ var Schema = mongoose.Schema;
 var TicketSchema = new Schema({
   title: String,
   user: String,
-  priority: Number,
+  priority: Number, // Between 0-9, 9 being the highest
   date: String,
   type: String,
   description: String,
-  status: String,
+  status: String, // Open, inprogress, and closed
   chats: []
 });
 
@@ -76,18 +54,21 @@ var UserSchema = new Schema({
 var ticket = mongoose.model('model', TicketSchema);
 var user = mongoose.model('user', UserSchema);
 
+// Hardcoded Admin into the system
 var admin = new user({
   username: "admin",
   password: "admin",
   priv: 'a'
 });
 
-// Adds a user to the db
+// LOGIN/REGISTRATION and AUTHORIZATION FUNCTIONS
+
+// Post request to handle the registration of a "user"
 app.post('/post/newUser/', (req, res) => { 
   let u = req.body.username;
   let p = req.body.password;
 
-  let p1 = user.findOne({username : u}).exec();
+  let p1 = user.findOne({username : u}).exec(); // Looks to see if the username is taken
   p1.then( (results) => {
     if (results == null) { 
       var newUser = new user({
@@ -97,8 +78,7 @@ app.post('/post/newUser/', (req, res) => {
       });
       let p2 = newUser.save();
       p2.then((doc => {
-        res.sendStatus(200);
-        console.log("Added User: "+ u + " " +p);
+        res.sendStatus(200); // Status code for successful registration
       }))
       p2.catch((err) => {
         res.sendStatus(201);
@@ -106,18 +86,97 @@ app.post('/post/newUser/', (req, res) => {
       });
     }
     else{
-      res.sendStatus (201);
+      res.sendStatus (201); // Status code for a used username
     }
   });
-
 });
 
-// Returns a JSON array containing the information for every ticket.
+// Post request for logging in
+app.post('/post/login', (req, res) => {
+  let u = req.body.username;
+  let p = req.body.password;
+
+  let p1 = user.findOne({"username": u}).exec();
+  p1.then((results) => {
+    if (results == null){ // Checks if there is any user under the username
+      res.sendStatus(202);
+      return
+    }
+    else if (results.password == p){ // Checks if the password is valid
+      if (results.priv == 'a'){ // Checks for an admin
+        let sid = addSession(u, 'a'); // New cookie and session
+        res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
+        res.sendStatus(201); // Status code for an admin login
+      }
+      else{
+        let sid = addSession(u, 'u');
+        res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
+        res.sendStatus(200); // Status code for a user login
+      }
+    }
+    else{
+      res.end("error");
+    }
+  });
+  p1.catch((err) => {
+    res.end(err);
+  });
+});
+
+var sessions = {}; // Var to hold Session ID, Username and Privellage for client cookie comparison
+
+// Adds a client's session to the sessions var
+function addSession(user, adminPriv){
+	let sessionId = Math.floor(Math.random()*100000);
+	let sessionStart = Date.now();
+	sessions[user] =  {'sid' : sessionId, 'start' : sessionStart, 'priv' : adminPriv};
+  return sessionId;
+}
+
+// Checks if a client has a valid session ID
+function doesUserHaveSession(user, sessionId){
+  let entry = sessions[user];
+  if (entry!=undefined) {
+    return entry.sid == sessionId;
+  }
+}
+
+//Checks if client has a valid session token
+function auth(req, res, next){
+  try{
+    if(req.cookies != undefined || req.cookies != undefined){
+      if(doesUserHaveSession(req.cookies.login.username, req.cookies.login.sid)){
+        next();
+      } 
+    }
+    else{
+      return res.redirect(302, '/'); // Redirects to login page
+    }
+  }
+  catch{
+    return res.redirect(302, '/'); // Redirects to login page
+  }
+}
+
+// Checks if user has a valid admin session
+function checkAdmin(req, res, next){
+  if (sessions[req.cookies.login.username].priv == 'a'){
+    next()
+  }
+  else{
+    res.end('Access Denied');
+  }
+}
+
+
+// ADMIN FUNCTIONALITY
+
+// Get request for the admin dashboard html page
 app.get('/home_admin', auth, checkAdmin, (req, res) => {
   res.sendFile('./public_html/admin.html', {root: __dirname });
 });
 
-// Retrieves all tickets for admins
+// Get request that returns JSON string of every ticket
 app.get('/get/adminTickets', auth, checkAdmin, (req, res) => {
   let p1 = ticket.find({}).exec();
   p1.then( (results) => {
@@ -128,12 +187,15 @@ app.get('/get/adminTickets', auth, checkAdmin, (req, res) => {
   });
 });
 
-// Returns a Json of tickets for one user
+
+// USER FUNCTIONALITY
+
+// Get request that returns the user html page
 app.get('/home', auth, (req, res) =>{
   res.sendFile('./public_html/home.html', {root: __dirname });
 });
 
-// Retrieves a user's tickets
+// Get request to return a user's tickets in a JSON string
 app.get('/get/userTickets/', auth, (req,res) => {
   let u = req.cookies.login.username;
   let p1 = user.findOne({username : u}).exec();
@@ -153,31 +215,7 @@ app.get('/get/userTickets/', auth, (req,res) => {
   });
 })
 
-// Returns information for one ticket
-app.get('/get/ticket/', auth, (req, res) => {
-  let id = req.cookies.ticketId.id;
-  let p1 = ticket.findById(id).exec()
-  p1.then((results) => {
-    res.end(JSON.stringify(results));
-  });
-  p1.catch((err) => {
-    res.end(err);
-  });
-});
-
-// Returns the page for the ticketView page
-app.get('/ticketView', auth, (req,res) => {
-  res.sendFile('./public_html/ticket.html', {root: __dirname });
-});
-
-// Creates a cookie of ticket id used for ticketViewer
-app.post('/post/ticketView', auth, (req,res) => {
-  let id = req.body.ticketId
-  res.cookie("ticketId", {id: id}, {maxAge:120000});
-  res.sendStatus(200);
-});
-
-// Adds a ticket to the db
+// Post request that handles making new tasks
 app.post('/post/newTicket/', auth, (req, res) => {
 
   let t = req.body.title;
@@ -202,9 +240,9 @@ app.post('/post/newTicket/', auth, (req, res) => {
   p1.then((doc => {
     let id = doc._id.toString();
     console.log("New ticket: "+ t);
-    let p2 = user.findOne({username: u}).exec();
+    let p2 = user.findOne({username: u}).exec(); // Looks for use to assign task to
     p2.then((doc =>{
-      doc.tickets.push(id);
+      doc.tickets.push(id); // Appends user's ticket list
       let p3 = doc.save();
       p3.then((doc => {
         console.log("New ticket: "+ t + " added to: " + u);
@@ -226,32 +264,26 @@ app.post('/post/newTicket/', auth, (req, res) => {
   });
 });
 
-// Handles logins
-app.post('/post/login', (req, res) => {
-  let u = req.body.username;
-  let p = req.body.password;
+// TICKET VIEWER PAGE FUNCTIONALITY
 
-  let p1 = user.findOne({"username": u}).exec();
+// Returns the html for the ticketView page
+app.get('/ticketView', auth, (req,res) => {
+  res.sendFile('./public_html/ticket.html', {root: __dirname });
+});
+
+// Sends a cookie of the ticket id used for ticketViewer
+app.post('/post/ticketView', auth, (req,res) => {
+  let id = req.body.ticketId
+  res.cookie("ticketId", {id: id}, {maxAge:120000});
+  res.sendStatus(200);
+});
+
+// Returns information for one ticket in a JSON string
+app.get('/get/ticket/', auth, (req, res) => {
+  let id = req.cookies.ticketId.id;
+  let p1 = ticket.findById(id).exec()
   p1.then((results) => {
-    if (results == null){
-      res.sendStatus(202);
-      return
-    }
-    else if (results.password == p){
-      if (results.priv == 'a'){
-        let sid = addSession(u, 'a');
-        res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
-        res.sendStatus(201);
-      }
-      else{
-        let sid = addSession(u, 'u');
-        res.cookie("login", {username: u, sid: sid, priv: results.priv}, {maxAge:120000});
-        res.sendStatus(200);
-      }
-    }
-    else{
-      res.end("error");
-    }
+    res.end(JSON.stringify(results));
   });
   p1.catch((err) => {
     res.end(err);
@@ -277,15 +309,14 @@ app.post('/post/msg', auth, (req,res) => {
   });
 })
 
-// Updates status of a ticket
-app.post('/post/updtMsg', auth, (req,res) => {
-  let id = req.body.id;
+// Post request that updates status of a ticket
+app.post('/post/updtStat', auth, checkAdmin, (req,res) => {
+  let id = req.cookies.ticketId.id;
   let stat = req.body.stat;
 
   let p1 = ticket.findById(id).exec()
   p1.then((results) => {
     results.status = stat;
-    
     let p2 = results.save();
     p2.then((results) => {
       res.end('stat saved');
@@ -295,24 +326,3 @@ app.post('/post/updtMsg', auth, (req,res) => {
     res.end('Ticket not found');
   });
 });
-
-app.listen(port, () => {
-    console.log(`Server running at ${port}`);
-});
-
-//Checks if users have a valid session token
-function auth(req, res, next){
-  try{
-    if(req.cookies != undefined || req.cookies != undefined){
-      if(doesUserHaveSession(req.cookies.login.username, req.cookies.login.sid)){
-        next();
-      } 
-    }
-    else{
-      return res.redirect(302, '/');
-    }
-  }
-  catch{
-    return res.redirect(302, '/');
-  }
-}

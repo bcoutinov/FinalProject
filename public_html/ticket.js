@@ -20,7 +20,7 @@ function closeForm () {
 }
 
 function sendMsg(){
-  msg = "<p>" + document.getElementById("user-msg").value + "</p>";
+  msg = document.getElementById("user-msg").value;
   let requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -57,18 +57,15 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
-// alert user of successful status update 
-
-function statusAlert() {
-	alert("Status updated!");
-}
-
 // displays ticket data on page
 
 function showTicket() {
   let url = '/get/ticket/';
 	let p = fetch(url);
 	let ps = p.then( (response) => {
+		if (response.status === 200) {
+      			document.getElementsByClassName("collapsible")[0].style.display = "none";
+    		}
     return response.json()   
 	}).then((object) => { 
     document.getElementsByTagName("h1")[0].innerHTML = "Ticket Id: " + object._id.slice(19, 24);
@@ -83,6 +80,23 @@ function showTicket() {
 	}).catch(() => { 
 	  alert('something went wrong');
 	});
+}
+
+function statusUpdate(element) {
+  let newStatus = element.value;
+  let p = fetch(url + "/post/updtStat", {
+    method: 'POST', 
+    body: JSON.stringify({stat: newStatus}),
+    headers: {"Content-Type": "application/json"}
+    });
+    p.then(() => { 
+      console.log('Status Updated');
+      alert("Status updated!");
+      showTicket();
+    });
+    p.catch(() => { 
+      alert('something went wrong');
+    });
 }
 
 showTicket();

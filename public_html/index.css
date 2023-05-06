@@ -69,7 +69,7 @@ input {
 	float: left;
 }
 
-.left-bar input, .right-bar input {
+.leftBar input, .rightBar input {
 	height: 20px;
 	width: 100%;
 }

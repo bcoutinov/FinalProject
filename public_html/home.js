@@ -75,7 +75,8 @@ var taskBody = document.getElementById("client-ticket-table");
 function showTickets(responseText){
   let tasks = JSON.parse(responseText);
   let taskStrings = [];
-
+  
+  // Gets the information on each ticket and pushes it as string
   for (let i in tasks){
       let tFunc = "openTicket('"+tasks[i]._id+"');";
       let taskString = '<tr>';
@@ -102,7 +103,8 @@ function openTicket(id){
           ticketId : id,
        }),
   };
-
+  
+  // Fetch Request
   fetch(url + '/post/ticketView', requestOptions)
       .then((response) => {
           if (response.status == 200){

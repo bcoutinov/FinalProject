@@ -7,8 +7,8 @@
 
 const url = "http://127.0.0.1"
 
-// Takes tickets and displays them on the webpage
-function showtickets(){
+// Sends a get request to get every ticket
+function getTickets(){
     var httpRequest = new XMLHttpRequest();
     if (!httpRequest) {
         alert('Error');
@@ -23,41 +23,37 @@ function showtickets(){
             else { alert('Error fetching Items'); }
         }
     }
-
     httpRequest.open('GET', url + "/get/adminTickets");
     httpRequest.send();
 }
 
-var taskBody = document.getElementById("taskBody");
+var ticketBody = document.getElementById("admin-ticket-table");
 
-// Takes items and displays them on the webpage
+// Takes JSON objects of each ticket and displays it on the DOM
 function showTickets(responseText){
     let tasks = JSON.parse(responseText);
-    let taskStrings = [];
+    let taskStrings = []; // Array to hold strings for the entire body of the table
 
     for (let i in tasks){
-        console.log(tasks[i].title);
-
-        let tFunc = "openTicket('"+tasks[i]._id+"');";
         let taskString = '<tr>';
-        let taskId = '<td onclick='+tFunc+'>' + tasks[i]._id.slice(19, 24) + '</td>';
+        let taskViewerFunc = "openTicket('"+tasks[i]._id+"');"; // Function for opening ticket viewer
+        // Makes the ID cell of the task clickable to open the ticket viewer
+        let taskId = '<td onclick='+taskViewerFunc+'>' + tasks[i]._id.slice(19, 24) + '</td>';
         let time = '<td>' + tasks[i].date + '</td>';
         let priority = '<td>' + tasks[i].priority + '</td>';
-        let state = '<td>' + tasks[i].status + '</td>';
+        let status = '<td>' + tasks[i].status + '</td>';
         let title = '<td>' + tasks[i].title + '</td>';
         let type = '<td>' + tasks[i].type + '</td>';
         let user = '<td>' + tasks[i].user + '</td>';
-        taskString = taskString + taskId + time + priority + state + title + type + user + "</tr>";
+        taskString = taskString + taskId + time + priority + status + title + type + user + "</tr>";
         taskStrings.push(taskString);
     }
-
     let htmlText =  taskStrings.join("");
-
-    taskBody.innerHTML = htmlText;
+    ticketBody.innerHTML = htmlText;
 }
 
-
-//
+// Function for opening the ticketviewer page for a specific ticket using a post request
+// Will retrieve a cookie for the specific ticket id and also redirect to ticket viewer
 function openTicket(id){
     let requestOptions = {
         method: 'POST',
@@ -66,7 +62,6 @@ function openTicket(id){
             ticketId : id,
          }),
     };
-
     fetch(url + '/post/ticketView', requestOptions)
         .then((response) => {
             if (response.status == 200){
@@ -81,4 +76,4 @@ function openTicket(id){
         });
 }
 
-showtickets()
+getTickets()

@@ -23,7 +23,7 @@
 
     <h2 id="title">Ticket Title</h2>
 
-    <div class="left-container">
+    <div class="leftContainer">
         <dl>
             <dt>Requested For:</dt>
                 <dd id="client"></dd>
@@ -38,27 +38,27 @@
         </dl>
     </div>
 
-    <div class="right-container">
+    <div class="rightContainer">
         <p>Description:</p>
         <p id="description"></p>
     </div>
 
-    <button class="open-button" onclick="openForm()">Chat</button>
+    <button class="openButton" onclick="openForm()">Chat</button>
 
-    <div class="chat-popup" id="chat-form">
-        <form class="form-container" name="message"></form>
-        <div id="chatbox"></div>
-        <input name="user-msg" type="text" id="user-msg">
-        <input name="submit-msg" type="submit" id="submit-msg" class="btn" value="Send" 
+    <div class="chatPopup" id="chatForm">
+        <form class="formContainer" name="message"></form>
+        <div id="chatBox"></div>
+        <input name="userMsg" type="text" id="userMsg">
+        <input name="submitMsg" type="submit" id="submitMsg" class="btn" value="Send" 
             onclick="sendMsg()">
-        <button type="button" class="btn" id="button-close" onclick="closeForm()">Close</button>
+        <button type="button" class="btn" id="buttonClose" onclick="closeForm()">Close</button>
     </div>
 
     <button type="button" class="collapsible">Update Status</button>
 
     <div class="content">
-        <input id="in-progress" type="submit" value="In-progress" onclick="statusUpdate(this)">
-        <input id="closed" type="submit" value="Complete" onclick="statusUpdate(this)">
+        <input id="inProgress" type="submit" value="In-progress" onclick="statusUpdate(this)">
+        <input id="closed" type="submit" value="Closed" onclick="statusUpdate(this)">
     </div>
 
     <script src = "./ticket.js"></script>

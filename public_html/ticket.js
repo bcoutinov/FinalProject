@@ -19,6 +19,10 @@ function closeForm () {
     document.getElementById("chat-form").style.display = "none";
 }
 
+/* 	sendMsg modifies ticket chats in the database by adding a user generated
+	string to the end of the chats.
+*/
+
 function sendMsg(){
   msg = document.getElementById("user-msg").value;
   let requestOptions = {
@@ -31,6 +35,7 @@ function sendMsg(){
 
   fetch(url + '/post/msg', requestOptions)
       .then((response) => {
+	  // page will reload to display the new message
           if (response.status == 200){
               showTicket();
           }
@@ -40,7 +45,9 @@ function sendMsg(){
       });
 }
 
-// openCollapsible allows the user to open the status area
+/*	The variables coll and i, and the for loop allows the admin user to click on a collapsible 
+	button and display two other buttons.
+*/
 
 var coll = document.getElementsByClassName("collapsible");
 var i;
@@ -57,7 +64,10 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
-// displays ticket data on page
+/* 	The showTicket function first verifies the user privilege by checking the status code
+	and then changing the collapsible display. Next it displays the ticket object data on the page.
+	It uses a for loop to format how the chat string will appear in the chat area.
+*/
 
 function showTicket() {
   let url = '/get/ticket/';
@@ -87,6 +97,12 @@ function showTicket() {
 	  alert('something went wrong');
 	});
 }
+
+/*	The statusUpdate function uses the provided elements value to modify the 
+	Ticket object's status. Upon completion of this action, the user will be alerted
+	of the change and the showTicket function will be called to update the page's
+	display.
+*/
 
 function statusUpdate(element) {
   let newStatus = element.value;

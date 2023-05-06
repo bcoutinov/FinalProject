@@ -60,7 +60,7 @@ function openTicket(id){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             ticketId : id,
-         }),
+        }),
     };
     fetch(url + '/post/ticketView', requestOptions)
         .then((response) => {

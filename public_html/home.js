@@ -69,7 +69,7 @@ function getTickets(){
 }
 
 
-var taskBody = document.getElementById("client-ticket-table");
+var taskBody = document.getElementById("clientTicketTable");
 
 // Takes items and displays them on the webpage
 function showTickets(responseText){

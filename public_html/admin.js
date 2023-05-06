@@ -17,7 +17,6 @@ function getTickets(){
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                console.log(httpRequest.responseText);
                 showTickets(httpRequest.responseText);
             } 
             else { alert('Error fetching Items'); }

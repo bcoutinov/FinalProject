@@ -20,7 +20,7 @@ function closeForm () {
 }
 
 function sendMsg(){
-  msg = "<p>" + document.getElementById("user-msg").value + "</p>";
+  msg = document.getElementById("user-msg").value;
   let requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

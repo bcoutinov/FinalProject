@@ -57,6 +57,10 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
+// alert user of successful status update 
+
+function statusAlert() {
+	alert("Status updated!");
 }
 
 // displays ticket data on page
@@ -65,7 +69,7 @@ function showTicket() {
   let url = '/get/ticket/';
 	let p = fetch(url);
 	let ps = p.then( (response) => {
-	  return response.json();
+    return response.json()   
 	}).then((object) => { 
     document.getElementsByTagName("h1")[0].innerHTML = "Ticket Id: " + object._id.slice(19, 24);
     document.getElementById("title").innerText = object.title;
@@ -80,25 +84,5 @@ function showTicket() {
 	  alert('something went wrong');
 	});
 }
-
-// allows admin user to update the ticket status
-
-function statusUpdate(element) {
-  let url = "/updtStat/";
-  let newStatus = element.closest("id");
-  let p = fetch(url, {
-    method: 'POST', 
-    body: JSON.stringify(newStatus),
-    headers: {"Content-Type": "application/json"}
-    });
-    p.then(() => {
-      console.log('Status Updated');
-      alert("Status updated!");
-      showTicket();
-    });
-    p.catch(() => { 
-      alert('something went wrong');
-    });
-  }
 
 showTicket();

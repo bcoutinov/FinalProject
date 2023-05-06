@@ -10,13 +10,13 @@ const url = "http://127.0.0.1"
 // openForm allows the user to open the chat area
 
 function openForm () {
-    document.getElementById("chat-form").style.display = "block";
+    document.getElementById("chatForm").style.display = "block";
 }
 
 // closeForm allows the user to hide the chat area
 
 function closeForm () {
-    document.getElementById("chat-form").style.display = "none";
+    document.getElementById("chatForm").style.display = "none";
 }
 
 /*  sendMsg modifies ticket chats in the database by adding a user generated
@@ -24,7 +24,7 @@ function closeForm () {
 */
 
 function sendMsg(){
-  msg = document.getElementById("user-msg").value;
+  msg = document.getElementById("userMsg").value;
   let requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -92,7 +92,7 @@ function showTicket() {
       chatString[i] = object.chats[i][0] + " : " + object.chats[i][1] + "\n";
     }
     chatString = chatString.join("");
-    document.getElementById("chatbox").innerText = chatString;
+    document.getElementById("chatBox").innerText = chatString;
 	}).catch(() => { 
 	  alert('something went wrong');
 	});

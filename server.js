@@ -1,7 +1,8 @@
-/*
-Carlton Louie
-Mar. 21 2023
-This is a JS file server side functionality for the RescueMe help desk
+/*	Author: 	Carlton Louie
+	Class:  	CSC 337
+	File:		server.js
+	Assignment:	Final Project
+	This a JS file that handles all server side functionality
 */
 
 const express = require('express');
@@ -23,15 +24,13 @@ app.use(parser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-
 app.listen(port, () => {
   console.log(`Server running at ${port}`);
 });
 
-
 var Schema = mongoose.Schema;
 
-// Task schema
+// Ticket schema
 var TicketSchema = new Schema({
   title: String,
   user: String,
@@ -60,6 +59,7 @@ var admin = new user({
   password: "admin",
   priv: 'a'
 });
+
 
 // LOGIN/REGISTRATION and AUTHORIZATION FUNCTIONS
 

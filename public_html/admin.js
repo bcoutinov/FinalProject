@@ -35,7 +35,8 @@ function showTickets(responseText){
 
     for (let i in tasks){
         let taskString = '<tr>';
-        let taskViewerFunc = "openTicket('"+tasks[i]._id+"');"; // Function for opening ticket viewer
+	// Function for opening ticket viewer
+        let taskViewerFunc = "openTicket('"+tasks[i]._id+"');"; 
         // Makes the ID cell of the task clickable to open the ticket viewer
         let taskId = '<td onclick='+taskViewerFunc+'>' + tasks[i]._id.slice(19, 24) + '</td>';
         let time = '<td>' + tasks[i].date + '</td>';
@@ -44,7 +45,7 @@ function showTickets(responseText){
         let title = '<td>' + tasks[i].title + '</td>';
         let type = '<td>' + tasks[i].type + '</td>';
         let user = '<td>' + tasks[i].user + '</td>';
-        taskString = taskString + taskId + time + priority + status + title + type + user + "</tr>";
+        taskString= taskString + taskId + time + priority + status + title + type + user + "</tr>";
         taskStrings.push(taskString);
     }
     let htmlText =  taskStrings.join("");

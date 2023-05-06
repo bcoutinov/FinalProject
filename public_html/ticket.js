@@ -69,9 +69,6 @@ function showTicket() {
   let url = '/get/ticket/';
 	let p = fetch(url);
 	let ps = p.then( (response) => {
-		if (response.status === 200) {
-      			document.getElementsByClassName("collapsible")[0].style.display = "none";
-    		}
     return response.json()   
 	}).then((object) => { 
     document.getElementsByTagName("h1")[0].innerHTML = "Ticket Id: " + object._id.slice(19, 24);

@@ -19,7 +19,7 @@ body{
     border-top: 3px solid black;
 }
 
-.left-bar{
+.leftBar{
 	position: fixed;
 	left: 0;
 	right: 50%;
@@ -28,7 +28,7 @@ body{
 	margin: 1%;
 }
 
-.right-bar{
+.rightBar{
 	position: fixed;
 	left: 50%;
 	right: 0%;
@@ -37,7 +37,7 @@ body{
 	margin: 1%;
 }
 
-.left-bar, .right-bar {
+.leftBar, .rightBar {
 	height: 73%;
 	overflow: auto;
 }
@@ -50,16 +50,16 @@ input {
 	cursor: pointer;
 }
 
-.left-bar form, .right-bar form {
+.leftBar form, .rightBar form {
 	height: 80%;
 }
 
-.left-bar table, .right-bar table {
+.leftBar table, .rightBar table {
 	width: 95%;
 	font-size: 20px;
 }
 
-.left-bar label, .right-bar label{
+.leftBar label, .rightBar label{
 	width:100%;
     text-align:left;
     padding-right:10px;

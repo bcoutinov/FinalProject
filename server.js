@@ -1,8 +1,8 @@
 /*	Author: 	Carlton Louie
-	Class:  	CSC 337
-	File:		server.js
-	Assignment:	Final Project
-	This a JS file that handles all server side functionality
+    Class:  	CSC 337
+    File:		server.js
+    Assignment:	Final Project
+    This a JS file that handles all server side functionality
 */
 
 const express = require('express');

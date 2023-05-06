@@ -26,7 +26,7 @@ function getTickets(){
     httpRequest.send();
 }
 
-var ticketBody = document.getElementById("admin-ticket-table");
+var ticketBody = document.getElementById("adminTicketTable");
 
 // Takes JSON objects of each ticket and displays it on the DOM
 function showTickets(responseText){
